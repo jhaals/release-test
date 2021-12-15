@@ -3,4 +3,4 @@ foo:
 bar:
   - boo/*
 catalog:
-  - plugins/catalog-*/**/*
+  - plugins/catalog*/**/*
