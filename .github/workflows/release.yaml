@@ -8,5 +8,7 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 2
     - name: run
       run: npx zx bump.js

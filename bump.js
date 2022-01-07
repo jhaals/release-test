@@ -43,7 +43,7 @@ async function main() {
   //   return;
   // }
 
-  const diffFiles = await $`git diff --name-only HEAD HEAD~1`;
+  const diffFiles = await $`git diff --name-only HEAD~1`;
   const files = diffFiles.stdout
     .split("\n")
     .filter((file) => file !== "package.json") // skip root package.json
