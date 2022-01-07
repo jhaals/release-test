@@ -1,4 +1,4 @@
-name: "Pull Request Labeler"
+name: "Dependabot changeset maker"
 on:
 - pull_request_target
 
@@ -14,4 +14,4 @@ jobs:
         fetch-depth: 2
         ref: ${{ github.head_ref }} 
     - name: run
-      run: npx zx bump.js
+      run: node bump.js

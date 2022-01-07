@@ -1,4 +1,4 @@
-#!/usr/bin/env zx
+#!/usr/bin/env node
 
 /*
  * Copyright 2022 The Backstage Authors
@@ -17,6 +17,10 @@
  */
 
 const { promises: fs } = require("fs");
+const { execFile: execFileCb } = require("child_process");
+const { promisify } = require("util");
+
+const execFile = promisify(execFileCb);
 
 async function getPackagesNames(files) {
   const names = [];
@@ -29,24 +33,37 @@ async function getPackagesNames(files) {
 
 async function createChangeset(fileName, commitMessage, packages) {
   const pkgs = packages.map((pkg) => `'${pkg}': patch`).join("\n");
-  const message = commitMessage.stdout.replace(
-    /(b|B)ump ([a-z-]+)/,
-    "Bump `$2`"
-  );
+  const message = commitMessage.replace(/(b|B)ump ([a-z-]+)/, "Bump `$2`");
   const body = `---\n${pkgs}\n---\n\n${message}`;
   await fs.writeFile(fileName, body);
 }
 
-async function main() {
-  const branch = await $`git branch --show-current`;
+async function runPlain(cmd, ...args) {
+  try {
+    const { stdout } = await execFile(cmd, args, { shell: true });
+    return stdout.trim();
+  } catch (error) {
+    if (error.stderr) {
+      process.stderr.write(error.stderr);
+    }
+    if (!error.code) {
+      throw error;
+    }
+    throw new Error(
+      `Command '${[cmd, ...args].join(" ")}' failed with code ${error.code}`
+    );
+  }
+}
 
-  if (!branch.stdout.startsWith("dependabot/")) {
+async function main() {
+  const branch = await runPlain("git", "branch", "--show-current");
+  console.log(branch);
+  if (!branch.startsWith("dependabot/")) {
     console.log("Not a dependabot branch");
     return;
   }
-
-  const diffFiles = await $`git diff --name-only HEAD~1`;
-  const files = diffFiles.stdout
+  const diffFiles = await runPlain("git", "diff", "--name-only", "HEAD~1");
+  const files = diffFiles
     .split("\n")
     .filter((file) => file !== "package.json") // skip root package.json
     .filter((file) => file.includes("package.json"));
@@ -56,16 +73,23 @@ async function main() {
     return;
   }
 
-  const commitMessage = await $`git show --pretty=format:%s -s HEAD`;
+  const commitMessage = await runPlain(
+    "git",
+    "show",
+    "--pretty=format:%s",
+    "-s",
+    "HEAD"
+  );
+
   const packageNames = await getPackagesNames(files);
-  const shortHash = await $`git rev-parse --short HEAD`;
-  const fileName = `.changeset/dependabot-${shortHash.stdout.trim()}.md`;
+  const shortHash = await runPlain("git", "rev-parse", "--short", "HEAD");
+  const fileName = `.changeset/dependabot-${shortHash.trim()}.md`;
   await createChangeset(fileName, commitMessage, packageNames);
-  await $`git config --global user.email "noreply@backstage.io"`;
-  await $`git config --global user.name "Github changeset workflow"`;
-  await $`git add ${fileName}`;
-  await $`git commit -s -m "dependabot: add changeset"`;
-  await $`git push`;
+  // await $`git config --global user.email "noreply@backstage.io"`;
+  // await $`git config --global user.name "Github changeset workflow"`;
+  await runPlain("git", "add", fileName);
+  await runPlain("git", "commit", "--no-edit");
+  await runPlain("git", "push", "--force");
 }
 
 main().catch((error) => {
