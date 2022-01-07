@@ -101,7 +101,7 @@ async function main() {
     "config",
     "--global",
     "user.name",
-    "Github changeset workflow"
+    "'Github changeset workflow'"
   );
   await runPlain("git", "add", fileName);
   await runPlain("git", "commit", "-C", "HEAD", "--amend", "--no-edit");
