@@ -19,9 +19,9 @@
 const { promises: fs } = require("fs");
 const { execFile: execFileCb } = require("child_process");
 const { promisify } = require("util");
-
 const execFile = promisify(execFileCb);
 
+// Parses package.json files and returns the package names
 async function getPackagesNames(files) {
   const names = [];
   for (const file of files) {
@@ -57,11 +57,11 @@ async function runPlain(cmd, ...args) {
 
 async function main() {
   const branch = await runPlain("git", "branch", "--show-current");
-  console.log(branch);
   if (!branch.startsWith("dependabot/")) {
     console.log("Not a dependabot branch");
     return;
   }
+
   const diffFiles = await runPlain("git", "diff", "--name-only", "HEAD~1");
   if (diffFiles.includes(".changeset")) {
     console.log("Changeset already exists");
@@ -77,6 +77,9 @@ async function main() {
     return;
   }
 
+  const packageNames = await getPackagesNames(files);
+  const shortHash = await runPlain("git", "rev-parse", "--short", "HEAD");
+  const fileName = `.changeset/dependabot-${shortHash.trim()}.md`;
   const commitMessage = await runPlain(
     "git",
     "show",
@@ -84,25 +87,7 @@ async function main() {
     "-s",
     "HEAD"
   );
-
-  const packageNames = await getPackagesNames(files);
-  const shortHash = await runPlain("git", "rev-parse", "--short", "HEAD");
-  const fileName = `.changeset/dependabot-${shortHash.trim()}.md`;
   await createChangeset(fileName, commitMessage, packageNames);
-  await runPlain(
-    "git",
-    "config",
-    "--global",
-    "user.email",
-    "noreply@backstage.io"
-  );
-  await runPlain(
-    "git",
-    "config",
-    "--global",
-    "user.name",
-    "'Github changeset workflow'"
-  );
   await runPlain("git", "add", fileName);
   await runPlain("git", "commit", "-C", "HEAD", "--amend", "--no-edit");
   await runPlain("git", "push", "--force");
