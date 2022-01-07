@@ -38,10 +38,10 @@ async function createChangeset(fileName, commitMessage, packages) {
 async function main() {
   const branch = await $`git branch --show-current`;
 
-  if (!branch.stdout.startsWith("dependabot/")) {
-    console.log("Not a dependabot branch");
-    return;
-  }
+  // if (!branch.stdout.startsWith("dependabot/")) {
+  //   console.log("Not a dependabot branch");
+  //   return;
+  // }
 
   const diffFiles = await $`git diff --name-only HEAD HEAD~1`;
   const files = diffFiles.stdout
