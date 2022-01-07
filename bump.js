@@ -88,7 +88,7 @@ async function main() {
   // await $`git config --global user.email "noreply@backstage.io"`;
   // await $`git config --global user.name "Github changeset workflow"`;
   await runPlain("git", "add", fileName);
-  await runPlain("git", "commit", "--no-edit");
+  await runPlain("git", "commit", "--amend", "--no-edit");
   await runPlain("git", "push", "--force");
 }
 
