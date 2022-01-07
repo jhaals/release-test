@@ -6,5 +6,7 @@ jobs:
   triage:
     runs-on: ubuntu-latest
     steps:
+    - name: install
+      run: npm i -g zx
     - name: run dependabot script
-      run: npx zx bump.js
+      run: ls && ./bump.js
