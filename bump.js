@@ -63,6 +63,10 @@ async function main() {
     return;
   }
   const diffFiles = await runPlain("git", "diff", "--name-only", "HEAD~1");
+  if (diffFiles.includes(".changeset")) {
+    console.log("Changeset already exists");
+    return;
+  }
   const files = diffFiles
     .split("\n")
     .filter((file) => file !== "package.json") // skip root package.json
@@ -85,8 +89,20 @@ async function main() {
   const shortHash = await runPlain("git", "rev-parse", "--short", "HEAD");
   const fileName = `.changeset/dependabot-${shortHash.trim()}.md`;
   await createChangeset(fileName, commitMessage, packageNames);
-  // await $`git config --global user.email "noreply@backstage.io"`;
-  // await $`git config --global user.name "Github changeset workflow"`;
+  await runPlain(
+    "git",
+    "config",
+    "--global",
+    "user.email",
+    "noreply@backstage.io"
+  );
+  await runPlain(
+    "git",
+    "config",
+    "--global",
+    "user.name",
+    "Github changeset workflow"
+  );
   await runPlain("git", "add", fileName);
   await runPlain("git", "commit", "-C", "HEAD", "--amend", "--no-edit");
   await runPlain("git", "push", "--force");
