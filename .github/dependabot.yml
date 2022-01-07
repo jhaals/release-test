@@ -4,14 +4,6 @@ updates:
     directory: '/'
     schedule:
       interval: daily
-      time: '13:00'
-    open-pull-requests-limit: 10
-    labels:
-      - dependencies
-  - package-ecosystem: npm
-    directory: '/'
-    schedule:
-      interval: daily
       time: '14:00'
     open-pull-requests-limit: 10
     labels:
