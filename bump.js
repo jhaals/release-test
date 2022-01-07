@@ -59,7 +59,8 @@ async function main() {
   const shortHash = await $`git rev-parse --short HEAD`;
   const fileName = `.changeset/dependabot-${shortHash.stdout}.md`;
   await createChangeset(fileName, commitMessage, packageNames);
-
+  await $`git config --global user.email "noreply@backstage.io"`;
+  await $`git config --global user.name "Github changeset workflow"`;
   await $`git add ${fileName}`;
   await $`git commit -s -m "dependabot: add changeset"`;
   await $`git push`;
