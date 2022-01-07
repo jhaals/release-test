@@ -59,7 +59,7 @@ async function main() {
   const commitMessage = await $`git show --pretty=format:%s -s HEAD`;
   const packageNames = await getPackagesNames(files);
   const shortHash = await $`git rev-parse --short HEAD`;
-  const fileName = `.changeset/dependabot-${shortHash.stdout}.md`;
+  const fileName = `.changeset/dependabot-${shortHash.stdout.trim()}.md`;
   await createChangeset(fileName, commitMessage, packageNames);
   await $`git config --global user.email "noreply@backstage.io"`;
   await $`git config --global user.name "Github changeset workflow"`;
