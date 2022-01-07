@@ -5,12 +5,13 @@ on:
 jobs:
   triage:
     runs-on: ubuntu-latest
+    if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
     - uses: hmarr/debug-action@v2
     - name: Checkout
       uses: actions/checkout@v2
       with:
-        fetch-depth: 2
+        fetch-depth: 1
         ref: ${{ github.head_ref }} 
     - name: run
       run: npx zx bump.js
