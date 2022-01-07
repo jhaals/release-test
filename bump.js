@@ -29,8 +29,10 @@ async function getPackagesNames(files) {
 
 async function createChangeset(fileName, commitMessage, packages) {
   const pkgs = packages.map((pkg) => `'${pkg}': patch`).join("\n");
-  const msg = commitMessage.stdout.split(" ");
-  const message = `Bump \`${msg[2]}\` from ${msg[4]} to ${msg[6]}`;
+  const message = commitMessage.stdout.replace(
+    /(b|B)ump ([a-z-]+)/,
+    "Bump `$2`"
+  );
   const body = `---\n${pkgs}\n---\n\n${message}`;
   await fs.writeFile(fileName, body);
 }
