@@ -1,6 +1,6 @@
 name: "Dependabot changeset maker"
 on:
-- pull_request
+- pull_request_target
 
 jobs:
   generate-changeset:
