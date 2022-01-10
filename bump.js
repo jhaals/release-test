@@ -94,7 +94,7 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.log('Hello World!');
+  console.log('No World!');
   console.error(error.stack);
   process.exit(1);
 });
