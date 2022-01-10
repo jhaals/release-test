@@ -5,7 +5,7 @@ on:
 jobs:
   generate-changeset:
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]' && github.repository == 'jhaals/release-test'
+    if: github.actor == 'dependabot[bot]' && github.repository == 'jhaals/release-teso'
     steps:
     - name: Checkout
       uses: actions/checkout@v2
