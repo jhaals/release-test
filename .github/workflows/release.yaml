@@ -16,7 +16,6 @@ jobs:
       run: |
         git config --global user.email noreply@backstage.io
         git config --global user.name 'Github changeset workflow'
-    - uses: hmarr/debug-action@v2
     - name: Generate changeset
       uses: actions/github-script@v5
       with:
