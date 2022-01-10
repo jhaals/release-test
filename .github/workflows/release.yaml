@@ -41,7 +41,7 @@ jobs:
 
           const branch = await exec.getExecOutput('git branch --show-current');
           if (!branch.stdout.startsWith('dependabot/')) {
-            console.log('Not a dependabot branch');
+            console.log('Not a dependabot branch, skipping');
             return;
           }
 
@@ -64,10 +64,10 @@ jobs:
 
           const packageNames = await getPackagesNames(files);
           const { stdout: shortHash } = await exec.getExecOutput('git rev-parse --short HEAD');
-          console.log('short hash debug: shortHash)
+          console.log('short hash debug: shortHash')
           const fileName = `.changeset/dependabot-${shortHash.trim()}.md`;
           const { stdout: commitMessage } = await exec.getExecOutput('git show --pretty=format:%s -s HEAD');
           await createChangeset(fileName, commitMessage, packageNames);
-          await exec.exec('git add fileName);
+          await exec.exec(`git add ${fileName}`);
           await exec.exec('git commit -C HEAD --amend --no-edit');
           await exec.exec('git push --force');
