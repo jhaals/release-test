@@ -16,6 +16,7 @@ jobs:
       run: |
         git config --global user.email noreply@backstage.io
         git config --global user.name 'Github changeset workflow'
+    - uses: hmarr/debug-action@v2
     - name: Generate changeset
       uses: actions/github-script@v5
       with:
@@ -64,7 +65,6 @@ jobs:
 
           const packageNames = await getPackagesNames(files);
           const { stdout: shortHash } = await exec.getExecOutput('git rev-parse --short HEAD');
-          console.log('short hash debug: shortHash')
           const fileName = `.changeset/dependabot-${shortHash.trim()}.md`;
           const { stdout: commitMessage } = await exec.getExecOutput('git show --pretty=format:%s -s HEAD');
           await createChangeset(fileName, commitMessage, packageNames);
