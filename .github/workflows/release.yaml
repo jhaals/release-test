@@ -21,8 +21,8 @@ jobs:
       with:
         script: |
           // const exec = require('@actions/exec');
-          const branch = await exec.exec('git branch --show-current');
-          if (!branch.startsWith('dependabot/')) {
+          const branch = await exec.getExecOutput('git branch --show-current');
+          if (!branch.stdout.startsWith('dependabot/')) {
             console.log('Not a dependabot branch');
             return;
           }
