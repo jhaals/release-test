@@ -16,5 +16,14 @@ jobs:
       run: |
         git config --global user.email noreply@backstage.io
         git config --global user.name 'Github changeset workflow'
-    - name: Generate changesets
-      run: node bump.js
+    - name: Generate changeset
+      uses: actions/github-script@v5
+      with:
+      script: |
+        const exec = require('@actions/exec');
+        const branch = await exec.exec('git branch --show-current');
+        if (!branch.startsWith('dependabot/')) {
+          console.log('Not a dependabot branch');
+          return;
+        }
+        console.log('win')
