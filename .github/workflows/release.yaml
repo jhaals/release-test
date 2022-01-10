@@ -20,10 +20,42 @@ jobs:
       uses: actions/github-script@v5
       with:
         script: |
-          // const exec = require('@actions/exec');
+          const { promises: fs } = require('fs');
+
+          // Parses package.json files and returns the package names
+          async function getPackagesNames(files) {
+            const names = [];
+            for (const file of files) {
+              const data = JSON.parse(await fs.readFile(file, 'utf8'));
+              names.push(data.name);
+            }
+            return names;
+          }
+
           const branch = await exec.getExecOutput('git branch --show-current');
           if (!branch.stdout.startsWith('dependabot/')) {
             console.log('Not a dependabot branch');
             return;
           }
+
+          const diffOutput = await exec.getExecOutput('git diff --name-only HEAD~1');
+          const diffFiles = diffOutput.stdout.split('\n');
+
+          if (diffFiles.find(f => f.startsWith('.changeset'))) {
+            console.log('Changeset already exists, skipping');
+            return;
+          }
+
+          const files = diffFiles
+            .filter(file => file !== 'package.json') // skip root package.json
+            .filter(file => file.includes('package.json'));
+
+          if (!files.length) {
+            console.log('No package.json changes, skipping');
+            return;
+          }
+
+          const packageNames = await getPackagesNames(files);
+          const { stdout: shortHash } = await exec.getExecOutput('git', 'rev-parse', '--short', 'HEAD');
+          console.log(shortHash)
           console.log('win')
