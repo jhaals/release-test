@@ -5,7 +5,8 @@ on:
 jobs:
   generate-changeset:
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
+#    if: github.actor == 'dependabot[bot]' && github.repository == 'backstage/backstage'
+    if: github.actor == 'dependabot[bot]' && github.repository == 'jhaals/release-test'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -67,6 +68,6 @@ jobs:
             const fileName = `.changeset/dependabot-${shortHash.trim()}.md`;
             const { stdout: commitMessage } = await exec.getExecOutput('git show --pretty=format:%s -s HEAD');
             await createChangeset(fileName, commitMessage, packageNames);
-            await exec.exec(`git add ${fileName}`);
+            await exec.exec('git', ['add', fileName]);
             await exec.exec('git commit -C HEAD --amend --no-edit');
             await exec.exec('git push --force');
