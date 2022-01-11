@@ -14,7 +14,7 @@
         "semver": "^7.3.4"
     },
     "devDependencies": {
-        "webpack-dev-server": "4.3.1"
+        "webpack-dev-server": "4.7.2"
     },
     "author": "",
     "license": "ISC",
