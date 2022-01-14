@@ -1,0 +1,20 @@
+name: 'Dependabot changeset maker'
+on:
+  push:
+    # Sequence of patterns matched against refs/heads
+    branches:    
+      - main
+
+jobs:
+  generate-changeset:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Configure Git
+        run: |
+          if [ -f ".changeset/pre.json" ]; then
+              echo "pre-release"
+          else 
+              echo "regular release"
+          fi
