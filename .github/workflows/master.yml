@@ -17,3 +17,14 @@ jobs:
         with:
           repository: backstage/versions
           path: versions
+      - name: Configure Git
+        run: |
+          git config --global user.email noreply@backstage.io
+          git config --global user.name 'Github versions workflow'
+      - name: Configure Git
+        run: |
+          cd versions
+          echo winning > ${{ github.event.inputs.name }}
+          git add ${{ github.event.inputs.name }}
+          git commit -m "${{ github.event.inputs.name }}"
+          git push
