@@ -24,7 +24,7 @@ jobs:
       - name: Configure Git
         run: |
           cd versions
-          echo winning > ${{ github.event.inputs.name }}
+          echo winning > ${{ github.event.inputs.version }}
           git add ${{ github.event.inputs.name }}
-          git commit -m "${{ github.event.inputs.name }}"
+          git commit -m "${{ github.event.inputs.version }}"
           git push
