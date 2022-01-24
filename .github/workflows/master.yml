@@ -7,7 +7,7 @@ on:
         required: true
         default: '1.1'
 jobs:
-  generate-changeset:
+  create-new-version:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -21,10 +21,17 @@ jobs:
         run: |
           git config --global user.email noreply@backstage.io
           git config --global user.name 'Github versions workflow'
-      - name: Configure Git
+      - name: Create release
         run: |
           cd versions
           echo winning > ${{ github.event.inputs.version }}
-          git add ${{ github.event.inputs.version }}
-          git commit -m "${{ github.event.inputs.version }}"
+          if [[ "${{ github.event.inputs.version }}" == *"next"* ]]; then
+            echo Updating next tag
+            ln -s ../releases/${{ github.event.inputs.version }} tags/next
+            else
+            echo Updating main tag
+            ln -s ../releases/${{ github.event.inputs.version }} tags/main
+          fi
+          git add .
+          git commit -am "${{ github.event.inputs.version }}"
           git push
