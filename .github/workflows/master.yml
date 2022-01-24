@@ -27,10 +27,10 @@ jobs:
           echo winning > ${{ github.event.inputs.version }}
           if [[ "${{ github.event.inputs.version }}" == *"next"* ]]; then
             echo Updating next tag
-            ln -s ../releases/${{ github.event.inputs.version }} tags/next
+            rm -f v1/tags/next && ln -s ../releases/${{ github.event.inputs.version }} v1/tags/next
             else
             echo Updating main tag
-            ln -s ../releases/${{ github.event.inputs.version }} tags/main
+            rm -f v1/tags/main && ln -s ../releases/${{ github.event.inputs.version }} v1/tags/main
           fi
           git add .
           git commit -am "${{ github.event.inputs.version }}"
