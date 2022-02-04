@@ -32,7 +32,7 @@ jobs:
               status: "completed",
             });
             
-            if (r.data?.check_runs[0].conclusion !== "action_required") {
+            if (r.data.check_runs[0].conclusion !== "action_required") {
               console.log("NO actions required, skipping");
               return;
             }
