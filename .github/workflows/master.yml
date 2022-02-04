@@ -30,6 +30,7 @@ jobs:
               check_name: "DCO",
               status: "completed",
             });
+            console.log(r);
             if (r.data?.check_runs?.[0]?.conclusion !== "action_required") {
               console.log("NO actions required, skipping");
               return;
