@@ -1,6 +1,6 @@
-name: Versions
-on:
-  pull_request
+name: DCO helper
+on: workflow_dispatch
+
 
 jobs:
   dco-helper:
@@ -9,16 +9,56 @@ jobs:
       - name: View context attributes
         uses: actions/github-script@v5
         with:
-          script: console.log(context)
-      - name: bop
+          script: console.log(context);
+      - name: Verify pull requests
         uses: actions/github-script@v5
         with:
-          script: console.log('bop')
-      - name: Checks
-        uses: actions/github-script@v5
-        with: script |
-          console.log(github.rest.checks.listForRef({
-            'jhaals',
-            'release-test',
-            '${{ github.ref }}',
-          }));
+          script: |
+            const owner = "jhaals";
+            const repo = "release-test";
+            const pulls = await github.rest.pulls.list({
+              state: "open",
+              owner,
+              repo,
+            });
+
+            for (const pull of pulls.data) {
+              // Pick out the PRs that have the DCO check
+              const checks = await github.rest.checks.listForRef({
+                owner,
+                repo,
+                ref: pull.head.sha,
+                check_name: "DCO",
+                status: "completed",
+              });
+              // Skip if there are no checks
+              if (!checks.data.check_runs.length) {
+                continue;
+              }
+              // Skip if the conclusion is not action_required
+              if (checks.data.check_runs[0].conclusion !== "action_required") {
+                console.log(`No checks found for PR #${pull.number}, skipping`);
+                continue;
+              }
+              console.log(checks.data.check_runs[0]);
+              // Post a comment if we haven't already
+              const comments = await github.rest.issues.listComments({
+                owner,
+                repo,
+                issue_number: pull.number,
+              });
+
+              if (comments.data.find((c) => c.user.login === "github-actions[bot]")) {
+                console.log(`already commented on PR #${pull.number}, skipping`);
+                continue;
+              }
+
+              console.log(`creating comment on PR #${pull.number}`);
+              const body = `"Thanks for the contribution!\nAll commits need to be DCO signed before merging. See the DCO section in [CONTRIBUTING.md](https://github.com/backstage/backstage/blob/master/CONTRIBUTING.md#developer-certificate-of-origin) or click the [DCO BOT](${checks.data.check_runs[0].html_url}) status for more info.`;
+              await github.rest.issues.createComment({
+                repo,
+                owner,
+                issue_number: pull.number,
+                body,
+              });
+            }
