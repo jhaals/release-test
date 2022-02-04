@@ -20,7 +20,7 @@ jobs:
           script: |
             const owner = "jhaals";
             const repo = "release-test";
-            const ref = context.ref;
+            const ref = context.sha;
             const pr = context.payload.number;
 
             const r = await github.rest.checks.listForRef({
