@@ -18,7 +18,7 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            console.log(${{ github.ref }});
+            console.log({{ github.ref }});
             console.log(await github.rest.checks.listForRef({
               owner: 'jhaals',
               repo: 'release-test',
