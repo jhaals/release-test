@@ -40,7 +40,7 @@ jobs:
                 console.log(`No checks found for PR #${pull.number}, skipping`);
                 continue;
               }
-              console.log(checks.data.check_runs[0]);
+
               // Post a comment if we haven't already
               const comments = await github.rest.issues.listComments({
                 owner,
