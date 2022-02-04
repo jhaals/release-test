@@ -42,8 +42,7 @@ jobs:
                 repo,
                 issue_number: pr,
               });
-            console.log(JSON.stringify(comments.data, null, 2));
-            if (comments.data.find((c) => c.user.login === "bop")) {
+            if (comments.data.find((c) => c.user.login === "github-actions[bot]")) {
               console.log("already commented, skipping");
               return;
             }
