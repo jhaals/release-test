@@ -9,18 +9,13 @@ jobs:
       - name: View context attributes
         uses: actions/github-script@v5
         with:
-          script: console.log(context)
+          script: console.log(context);
       - name: cop
         uses: actions/github-script@v5
         with:
-          script: console.log('bop')
+          script: console.log('bop');
       - name: Checks
         uses: actions/github-script@v5
         with:
           script: |
-            console.log({{ github.ref }});
-            console.log(await github.rest.checks.listForRef({
-              owner: 'jhaals',
-              repo: 'release-test',
-              ref: '${{ github.ref }}'
-            }));
+            console.log(${{ github.ref }});
