@@ -1,39 +1,12 @@
 name: Versions
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version number'
-        required: true
-        default: '1.1'
+  pull_request
+
 jobs:
-  create-new-version:
+  dco-helper:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: View context attributes
+        uses: actions/github-script@v5
         with:
-          ref: ${{ github.event.inputs.version }}
-      - name: Checkout versions
-        uses: actions/checkout@v2
-        with:
-          repository: backstage/versions
-          path: versions
-      - name: Configure Git
-        run: |
-          git config --global user.email noreply@backstage.io
-          git config --global user.name 'Github versions workflow'
-      - name: Create release
-        run: |
-          cd versions
-          echo winning > ${{ github.event.inputs.version }}
-          if [[ "${{ github.event.inputs.version }}" == *"next"* ]]; then
-            echo Updating next tag
-            rm -f v1/tags/next && ln -s ../releases/${{ github.event.inputs.version }} v1/tags/next
-            else
-            echo Updating main tag
-            rm -f v1/tags/main && ln -s ../releases/${{ github.event.inputs.version }} v1/tags/main
-          fi
-          git add .
-          git commit -am "${{ github.event.inputs.version }}"
-          git push
+          script: console.log(context)
