@@ -18,5 +18,35 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            console.log(context.ref);
-            console.log(context.payload.number);
+            const owner = "jhaals";
+            const repo = "release-test";
+            const ref = context.ref;
+            const pr = context.payload.number;
+
+            const r = await github.rest.checks.listForRef({
+              owner,
+              repo,
+              ref,
+              check_name: "DCO",
+              status: "completed",
+            });
+            if (r.data?.check_runs?.[0]?.conclusion !== "action_required") {
+              console.log("NO actions required, skipping");
+              return;
+            }
+
+            const comments = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number: pr,
+            });
+            if (comments.data.find((c) => c.user.login === "bop")) {
+              console.log("already commented, skipping");
+              return;
+            }
+            await github.rest.issues.createComment({
+              repo,
+              owner,
+              issue_number: pr,
+              body: "DCO signing needed",
+            });
