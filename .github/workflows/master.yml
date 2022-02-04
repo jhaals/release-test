@@ -10,11 +10,15 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: console.log(context)
+      - name: bop
+        uses: actions/github-script@v5
+        with:
+          script: console.log('bop')
       - name: Checks
         uses: actions/github-script@v5
         with: script |
           console.log(github.rest.checks.listForRef({
             'jhaals',
             'release-test',
-            ${{ github.ref }},
+            '${{ github.ref }}',
           }));
