@@ -16,9 +16,10 @@ jobs:
           script: console.log('bop')
       - name: Checks
         uses: actions/github-script@v5
-        with: script |
-          console.log(github.rest.checks.listForRef({
-            'jhaals',
-            'release-test',
-            '${{ github.ref }}',
-          }));
+        with:
+          script: |
+            console.log(github.rest.checks.listForRef({
+              'jhaals',
+              'release-test',
+              '${{ github.ref }}',
+            }));
