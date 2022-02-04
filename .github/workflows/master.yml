@@ -19,7 +19,7 @@ jobs:
         with:
           script: |
             console.log(github.rest.checks.listForRef({
-              'jhaals',
-              'release-test',
-              '${{ github.ref }}'
+              owner: 'jhaals',
+              repo: 'release-test',
+              ref: '${{ github.ref }}'
             }));
