@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/jhaals/release-test/issues"
   },
-  "homepage": "https://github.com/jhaals/release-test#readme"
+  "homepage": "https://github.com/jhaals/release-test#readme",
+  "dependencies": {
+    "@octokit/rest": "^18.12.0"
+  }
 }
