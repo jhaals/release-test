@@ -20,9 +20,7 @@ jobs:
           script: |
             const owner = "jhaals";
             const repo = "release-test";
-            const ref = process.env.GITHUB_REF_NAME;
-            console.log(ref);
-            console.log(process.env.GITHUB_BASE_REF);
+            const ref = process.env.GITHUB_HEAD_REF;
             console.log(process.env);
             const pr = context.payload.number;
 
