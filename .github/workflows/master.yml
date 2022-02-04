@@ -36,4 +36,20 @@ jobs:
               console.log("NO actions required, skipping");
               return;
             }
-            console.log('win');
+
+            const comments = await github.rest.issues.listComments({
+                owner,
+                repo,
+                issue_number: pr,
+              });
+            console.log(JSON.stringify(comments.data, null, 2));
+            if (comments.data.find((c) => c.user.login === "bop")) {
+              console.log("already commented, skipping");
+              return;
+            }
+            await github.rest.issues.createComment({
+              repo,
+              owner,
+              issue_number: pr,
+              body: "DCO signing needed",
+            });
