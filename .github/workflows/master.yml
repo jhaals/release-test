@@ -1,9 +1,7 @@
 name: Versions
-# on:
-  # pull_request
 on:
-  check_suite:
-    types: [completed]
+  pull_request
+
 jobs:
   dco-helper:
     runs-on: ubuntu-latest
