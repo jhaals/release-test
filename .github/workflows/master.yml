@@ -28,5 +28,5 @@ jobs:
                 repo,
                 owner,
                 issue_number: 15,
-                'test',
+                body: 'test',
               });
