@@ -1,7 +1,5 @@
 name: Verify DCO
-on:
-  schedule:
-    - cron: '*/5 * * * *'
+on: workflow_dispatch
 
 jobs:
   dco-helper:
