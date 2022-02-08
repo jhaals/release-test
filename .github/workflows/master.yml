@@ -9,8 +9,8 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const owner = "backstage";
-            const repo = "backstage";
+            const owner = "jhaals";
+            const repo = "release-test";
             const pulls = await github.paginate(github.rest.pulls.list, {
               state: "open",
               owner,
