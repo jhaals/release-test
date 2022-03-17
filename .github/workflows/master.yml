@@ -10,11 +10,23 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            console.log(context.payload.issue.title);
-            
+            const keywords = {
+              'techdocs*|tech-docs|tech docs': 'docs-like-code',
+              'search*': 'search',
+              'catalog*': 'catalog',
+              'scaffolder*': 'scaffolder',
+            };
+
+            const labels = Object.entries(keywords)
+              .map(([regexp, label]) => {
+                if (new RegExp(regexp, 'gi').test(context.payload.issue.title)) {
+                  return label;
+                }
+              })
+              .filter(Boolean);
             github.rest.issues.addLabels({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              labels: ['Triage']
+              labels
             });
