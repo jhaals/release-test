@@ -2,5 +2,5 @@
   "extends": [
     "config:base"
   ],
-  "commitBody": "Signed-off-by: renovate <noreply@backstage.io>"
+  "commitBody": "Signed-off-by: Renovate Bot <noreply@backstage.io>"
 }
