@@ -7,9 +7,7 @@ module.exports = {
   platform: 'github',
   includeForks: true,
   repositories: [
-    'renovatebot/github-action',
-    'renovate-tests/cocoapods1',
-    'renovate-tests/gomod1',
+    'jhaals/release-test',
   ],
   packageRules: [
     {
