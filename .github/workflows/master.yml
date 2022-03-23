@@ -5,6 +5,9 @@ on:
     # string has to be quoted.
     - cron: '0/15 * * * *'
   workflow_dispatch:
+  pull_request:
+  issues:
+  issue_comment:
 jobs:
   renovate:
     runs-on: ubuntu-latest
