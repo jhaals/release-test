@@ -6,6 +6,8 @@ on:
     - cron: '0/15 * * * *'
   workflow_dispatch:
   pull_request:
+    types:
+      - edited
   issues:
   issue_comment:
 jobs:
