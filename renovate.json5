@@ -4,6 +4,7 @@
   packageRules: [
     {
       matchPackagePrefixes: ["@material-ui/", "@mui/"],
+      rangeStrategy: "replace",
     },
   ],
 }
