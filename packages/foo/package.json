@@ -18,7 +18,8 @@
         "webpack-dev-server": "4.3.1",
         "uuid": "8.3.1",
         "@mui/material": "5.5.2",
-        "@mui/base": "5.0.0-alpha.73"
+        "@mui/base": "5.0.0-alpha.73",
+        "@types/node": "^14.14.32"
     },
     "author": "",
     "license": "ISC",
