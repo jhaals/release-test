@@ -1,5 +1,6 @@
 {
   extends: ["config:base", ":disableDependencyDashboard", ":gitSignOff"],
+  rangeStrategy: "replace",
   packageRules: [
     {
       matchPackagePrefixes: ["@material-ui/", "@mui/"],
