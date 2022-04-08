@@ -109,10 +109,10 @@ jobs:
           git config --global user.name 'Github changeset workflow'
       - name: yarn-deduplicate
         run: |
-        npx yarn-deduplicate --strategy highest
+          npx yarn-deduplicate --strategy highest
 
-        if $(git status |grep yarn.lock); then
-          git add yarn.lock
-          git commit -m 'yarn deduplicate'
-          git push
-        fi
+          if $(git status |grep yarn.lock); then
+            git add yarn.lock
+            git commit -m 'yarn deduplicate'
+            git push
+          fi
