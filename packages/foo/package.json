@@ -15,7 +15,7 @@
     },
     "devDependencies": {
         "@changesets/cli": "^2.14.0",
-        "webpack-dev-server": "4.3.1",
+        "webpack-dev-server": "4.8.0",
         "uuid": "8.3.1",
         "@mui/material": "5.5.2",
         "@mui/base": "5.0.0-alpha.73",
