@@ -23,11 +23,13 @@ jobs:
         with:
           script: |
             console.log(context);
+            console.log('boooop')
+            console.log(context.payload.pull_request);
+            console.log(context.payload.pull_request.changed_files);
       - name: Approve
         uses: actions/github-script@v6
         with:
           script: |
-            console.log(context.pull_request);
             github.rest.pulls.createReview({
               owner: 'jhaals',
               repo: 'release-test',
