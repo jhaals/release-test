@@ -27,6 +27,8 @@ jobs:
           script: |
             console.log(context.issue);
             github.rest.pulls.createReview({
+              owner: 'jhaals',
+              repo: 'release-test',
               pull_number: context.issue.number,
               event: 'APPROVE'
             })
