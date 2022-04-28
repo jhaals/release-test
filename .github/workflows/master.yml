@@ -20,13 +20,12 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            console.log(context)
+            console.log(context);
             if (context.payload.changed_files !== 3) {
               console.log('Skipping auto approval since more files were changed than expected');
-              return
+              return;
             }
             github.pulls.createReview({
               pull_number: context.payload.number,
               event: 'APPROVE'
             })
-            }
