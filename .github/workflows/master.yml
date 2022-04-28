@@ -21,8 +21,12 @@ jobs:
         with:
           script: |
             console.log(context);
-
+      - name: Approve
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log(context.issue);
             github.rest.pulls.createReview({
-              pull_number: context.number,
+              pull_number: context.issue.number,
               event: 'APPROVE'
             })
