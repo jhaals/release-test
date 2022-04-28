@@ -21,9 +21,10 @@ jobs:
         with:
           script: |
             console.log(context);
-            console.log('changed files: ', context.payload.changed_files);
+            
+            console.log('changed files: ', context.pull_request.changed_files);
 
-            github.pulls.createReview({
-              pull_number: context.payload.number,
+            github.rest.pulls.createReview({
+              pull_number: context.number,
               event: 'APPROVE'
             })
