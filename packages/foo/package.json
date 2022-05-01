@@ -19,7 +19,7 @@
         "uuid": "8.3.2",
         "@mui/material": "5.6.3",
         "@mui/base": "5.0.0-alpha.78",
-        "@types/node": "^14.14.32",
+        "@types/node": "^16.0.0",
         "prettier": "^2.6.0"
     },
     "author": "",
