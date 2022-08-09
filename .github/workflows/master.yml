@@ -1,38 +1,14 @@
 name: Sync Approve renovate lock file changes
 on:
-  pull_request_target:
-    paths:
-      - '.github/workflows/sync_renovate-changesets.yml'
-      - '**/yarn.lock'
+  workflow_dispatch:
 
 jobs:
   generate-changeset:
     runs-on: ubuntu-latest
-    if: github.actor == 'renovate[bot]' && github.repository == 'jhaals/release-test'
     steps:
-      # - name: Checkout
-      #   uses: actions/checkout@v3
-      #   with:
-      #     fetch-depth: 2
-      #     ref: ${{ github.head_ref }}
-#          token: ${{ secrets.GH_SERVICE_ACCOUNT_TOKEN }}
-      - uses: hmarr/debug-action@v2
-
-      - name: View context attributes
-        uses: actions/github-script@v6
-        with:
-          script: |
-            console.log(context);
-            console.log('boooop')
-            console.log(context.payload.pull_request);
-            console.log(context.payload.pull_request.changed_files);
-      - name: Approve
-        uses: actions/github-script@v6
-        with:
-          script: |
-            github.rest.pulls.createReview({
-              owner: 'jhaals',
-              repo: 'release-test',
-              pull_number: context.issue.number,
-              event: 'APPROVE'
-            })
+      - name: test
+        run: |
+          echo hello
+          echo world
+          false
+          echo winning should not show
